@@ -1,5 +1,6 @@
 import NavBar from "../components/navbar";
-import React from "react";
+import { useState } from "react";
+
 import {
   Table,
   TableHeader,
@@ -9,33 +10,11 @@ import {
   TableCell,
   getKeyValue,
   Button,
+  Input,
 } from "@nextui-org/react";
+import axios from "axios";
 
 const rows = [
-  {
-    key: "1",
-    name: "Tony Reichert",
-    type: "CEO",
-    dir: "Active",
-    last_checked: "10",
-    amount_of_files: "10",
-  },
-  {
-    key: "2",
-    name: "Tony Reichert",
-    type: "show",
-    dir: "Active",
-    last_checked: "10",
-    amount_of_files: "10",
-  },
-  {
-    key: "3",
-    name: "Tony Reichert",
-    type: "movie",
-    dir: "Active",
-    last_checked: "10",
-    amount_of_files: "10",
-  },
   {
     key: "4",
     name: "Tony Reichert",
@@ -48,32 +27,23 @@ const rows = [
 
 const columns = [
   {
-    key: "name",
-    label: "NAME",
-  },
-  {
-    key: "type",
-    label: "TYPE",
-  },
-  {
-    key: "dir",
-    label: "DIR",
-  },
-  {
-    key: "last_checked",
-    label: "LAST CHECKED",
-  },
-  {
     key: "amount_of_files",
     label: "AMOUNT OF FILES",
   },
 ];
 
-// right now just add directories into the db
-// add a resolver in the backend to see
-// if the media is a show or a movie
-
 const DigestPage = () => {
+  const [path, setPath] = useState("");
+
+  const submitFolder = async () => {
+    await axios.post(
+      "http://localhost:8000/directory/add",
+      {
+        directoryToTarget: path,
+      },
+      { withCredentials: false }
+    );
+  };
   return (
     <>
       <NavBar />
@@ -95,8 +65,21 @@ const DigestPage = () => {
         </TableBody>
       </Table>
       <div className="flex items-center justify-center">
-        <Button className="w-9/12 mt-5" color="success" onClick={() => {}}>
-          <h1>Add Directory</h1>
+        <Input
+          isClearable
+          className="w-9/12 mt-5"
+          color="primary"
+          variant="bordered"
+          onClear={() => console.log("input cleared")}
+          value={path}
+          label={"Copy your directory path, and paste"}
+          onValueChange={(value: string) => setPath(value)}
+        ></Input>
+        <Button
+          className="mt-5 ml-2"
+          onClick={async () => await submitFolder()}
+        >
+          digest
         </Button>
       </div>
     </>

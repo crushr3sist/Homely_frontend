@@ -1,4 +1,5 @@
 import ReactHlsPlayer from "react-hls-player";
+import NavBar from "../components/navbar";
 
 const PlayerPage = () => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -8,6 +9,8 @@ const PlayerPage = () => {
 
   return (
     <>
+      <NavBar></NavBar>
+
       <h1>{videoName}</h1>
       {/* @ts-expect-error lib is default in src, types are wrong */}
       <ReactHlsPlayer

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import NavBar from "../components/navbar";
 
 const IndexPage = () => {
   const [videos, setVideos] = useState([]);
@@ -20,6 +21,7 @@ const IndexPage = () => {
 
   return (
     <>
+      <NavBar></NavBar>
       <h1> Index Page </h1>
       <h2>Your shows</h2>
       {videos.map((element, key) => (
