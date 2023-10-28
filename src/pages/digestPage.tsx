@@ -34,15 +34,38 @@ const columns = [
 
 const DigestPage = () => {
   const [path, setPath] = useState("");
-  let slashCounter = 0;
-  let modifiedString = "";
+  const [inputErr, setInputErr] = useState<boolean>(false);
+  const [fieldColor, setFieldColor] = useState(0);
+  const variations = ["primary", "success", "danger"];
+
   const handlePathInput = (pathStr: string) => {
+    let slashCounter = 0;
+    let modifiedString = "";
+
+    if (pathStr.length < 1) {
+      setFieldColor(2);
+      setInputErr(true);
+      return;
+    } else {
+      setFieldColor(0);
+      setInputErr(false);
+    }
+
     for (let i = 0; i < pathStr.length; i++) {
       if (pathStr[i] === "\\") {
         slashCounter += 1;
       }
     }
 
+    if (slashCounter < 1) {
+      setInputErr(true);
+
+      setFieldColor(2);
+      return;
+    } else {
+      setFieldColor(0);
+      setInputErr(false);
+    }
     for (let j = 0; j < slashCounter; j++) {
       for (let i = 0; i < pathStr.length; i++) {
         if (pathStr[i] === "\\") {
@@ -52,21 +75,32 @@ const DigestPage = () => {
         }
       }
     }
-    if (modifiedString[modifiedString.length] !== "\\\\") {
+
+    if (modifiedString[modifiedString.length] === "\\") {
+      modifiedString = modifiedString.concat("\\");
+    }
+    if (modifiedString[modifiedString.length] !== "\\") {
       modifiedString = modifiedString.concat("\\\\");
+    } else if (modifiedString[modifiedString.length] === "\\\\") {
+      null;
     }
     console.log(modifiedString);
-    setPath(pathStr);
+    setPath(modifiedString);
+    setFieldColor(1);
   };
 
   const submitFolder = async () => {
-    await axios.post(
-      "http://localhost:8000/directory/add",
-      {
-        directoryToTarget: path,
-      },
-      { withCredentials: false }
-    );
+    if (!inputErr) {
+      await axios.post(
+        "http://localhost:8000/directory/add",
+        {
+          directoryToTarget: path,
+        },
+        { withCredentials: false }
+      );
+    } else {
+      return;
+    }
   };
 
   return (
@@ -93,12 +127,11 @@ const DigestPage = () => {
         <Input
           isClearable
           className="w-9/12 mt-5"
-          color="primary"
+          color={variations[fieldColor]}
           variant="bordered"
           onClear={() => console.log("input cleared")}
-          value={path}
           label={"Copy your directory path, and paste"}
-          onValueChange={(value: string) => handlePathInput(value)}
+          onValueChange={(value) => handlePathInput(value)}
         ></Input>
         <Button
           className="mt-5 ml-2"
