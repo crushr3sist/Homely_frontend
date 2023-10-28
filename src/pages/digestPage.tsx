@@ -34,6 +34,30 @@ const columns = [
 
 const DigestPage = () => {
   const [path, setPath] = useState("");
+  let slashCounter = 0;
+  let modifiedString = "";
+  const handlePathInput = (pathStr: string) => {
+    for (let i = 0; i < pathStr.length; i++) {
+      if (pathStr[i] === "\\") {
+        slashCounter += 1;
+      }
+    }
+
+    for (let j = 0; j < slashCounter; j++) {
+      for (let i = 0; i < pathStr.length; i++) {
+        if (pathStr[i] === "\\") {
+          modifiedString = pathStr.replace("\\", "\\\\");
+        } else {
+          continue;
+        }
+      }
+    }
+    if (modifiedString[modifiedString.length] !== "\\\\") {
+      modifiedString = modifiedString.concat("\\\\");
+    }
+    console.log(modifiedString);
+    setPath(pathStr);
+  };
 
   const submitFolder = async () => {
     await axios.post(
@@ -44,6 +68,7 @@ const DigestPage = () => {
       { withCredentials: false }
     );
   };
+
   return (
     <>
       <NavBar />
@@ -73,7 +98,7 @@ const DigestPage = () => {
           onClear={() => console.log("input cleared")}
           value={path}
           label={"Copy your directory path, and paste"}
-          onValueChange={(value: string) => setPath(value)}
+          onValueChange={(value: string) => handlePathInput(value)}
         ></Input>
         <Button
           className="mt-5 ml-2"
