@@ -40,28 +40,23 @@ export default function NavBar() {
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand>
-          <p className="font-bold text-inherit">Homely</p>
+          <p className="font-bold text-inherit">
+            <a href={"/"}>Homely</a>
+          </p>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarBrand>
-          <p className="font-bold text-inherit">Homely</p>
+          <p className="font-bold text-inherit">
+            <a href={"/"}>Homely</a>
+          </p>
         </NavbarBrand>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
+        <NavbarItem isActive>
+          <Link href="#">shows</Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
-          </Link>
+          <Link href="#">movies</Link>
         </NavbarItem>
       </NavbarContent>
 

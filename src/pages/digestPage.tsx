@@ -92,7 +92,7 @@ const DigestPage = () => {
   const submitFolder = async () => {
     if (!inputErr) {
       await axios.post(
-        "http://localhost:8000/directory/add",
+        "http://10.1.1.140:8000/directory/add",
         {
           directoryToTarget: path,
         },
